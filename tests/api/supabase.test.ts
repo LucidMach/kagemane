@@ -2,15 +2,17 @@ import dotenv from "dotenv";
 dotenv.config({ path: ".env.local" });
 
 import { supabase } from "../../utils/supabase";
-import { pingUpdate } from "../../pages/api/pingUpdate";
+import { pingIP } from "../../pages/api/pingIP";
 
 test("check env variables", () => {
   expect(process.env.NEXT_PUBLIC_SUPABASE_URL).not.toBe(undefined);
   expect(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY).not.toBe(undefined);
 });
 
-test("check pingUpdate", async () => {
-  expect(await pingUpdate("test07", "127.0.0.1", "3000")).toBe("SUCCESS");
+test("check pingIP", async () => {
+  expect(await pingIP("test07", "127.0.0.1", "3000")).toBe("SUCCESS");
+
+  // clean up after test
   const { data, error } = await supabase
     .from("Bot")
     .delete()

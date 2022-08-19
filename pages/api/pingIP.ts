@@ -9,11 +9,11 @@ export default async function handler(
   const { id, ip, port } = req.body;
 
   res.status(200).json({
-    data: pingUpdate(ip, id, port),
+    data: pingIP(id, ip, port),
   });
 }
 
-export const pingUpdate = async (id: string, ip: string, port: string) => {
+export const pingIP = async (id: string, ip: string, port: string) => {
   const { data, error } = await supabase.from("Bot").upsert({ id, ip, port });
   return error ? ":( Oops" : "SUCCESS";
 };
