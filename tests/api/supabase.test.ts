@@ -3,6 +3,7 @@ dotenv.config({ path: ".env.local" });
 
 import { supabase } from "../../utils/supabase";
 import { pingIP } from "../../pages/api/pingIP";
+import { getIP } from "../../pages/api/getIP";
 
 test("check env variables", () => {
   expect(process.env.NEXT_PUBLIC_SUPABASE_URL).not.toBe(undefined);
@@ -18,4 +19,8 @@ test("check pingIP", async () => {
     .delete()
     .match({ id: "test07" });
   if (error) console.log(error);
+});
+
+test("check getIP", async () => {
+  expect(await getIP("init")).not.toBe("ERROR");
 });

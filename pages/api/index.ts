@@ -18,8 +18,9 @@ export default function handler(
     name: "LucidMach",
     endpoints: {
       "/api": "home route of api, shows all avaiable enpoints of the API",
-      "/api/pingUpdate":
+      "/api/pingIP":
         "API endpoint for bot to ping/update it's IP address in DB",
+      "/api/getIP": "API endpoint for UI to get a bot's current IP address",
     },
   });
 }
