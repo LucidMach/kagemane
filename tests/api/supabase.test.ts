@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config({ path: ".env.local" });
-import { supabase } from "../../utils/supabase";
 
+import { supabase } from "../../utils/supabase";
 import { pingUpdate } from "../../pages/api/pingUpdate";
 
 test("check env variables", () => {
@@ -10,8 +10,7 @@ test("check env variables", () => {
 });
 
 test("check pingUpdate", async () => {
-  const recieved = await pingUpdate("test07", "127.0.0.1", "3000");
-  expect(recieved).toBe("SUCCESS");
+  expect(await pingUpdate("test07", "127.0.0.1", "3000")).toBe("SUCCESS");
   const { data, error } = await supabase
     .from("Bot")
     .delete()
