@@ -43,14 +43,17 @@ void pingIP() {
     delay(1000);
     Serial.print(".");
   }
-  String BODY = "{\"id\":\"test0\",\"ip\":\"192.168.118.94\",\"port\":\"80\"}";
-//  String BODY = "{\"id\":\"" + botid + "\",\"ip\":\"" + serverip + "\", \"port\":\"3000\"}";
+  
+  //  String BODY = "{\"id\":\"test0\",\"ip\":\"192.168.118.94\",\"port\":\"80\"}";
+  String BODY = "{\"id\":\"" + botid + "\",\"ip\":\"" + serverip + "\", \"port\":\"80\"}";
+  unsigned int len = BODY.length();
   // Forming the request (the hardest part).
   String request = String(METHOD) + " " + PATH + " HTTP/1.1\r\n" +
                    "Host: " + URL + "\r\n" +
                    "Content-Type: " + CONTENTTYPE + "\r\n" +
-                   "Connection: close\r\n\r\n" +
-                   BODY + "\r\n\r\n";
+                   "Content-Length: " + len + "\r\n\r\n" +
+                   BODY + "\r\n" +
+                   "Connection: close\r\n\r\n";
 
   // Printing the request to be sure it's formed fine.
   Serial.println("Request is: ");
