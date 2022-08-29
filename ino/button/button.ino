@@ -43,8 +43,8 @@ void pingIP() {
     delay(1000);
     Serial.print(".");
   }
-
-  String BODY = "{\"id\":\""+botid+"\",\"ip\":\""+serverip+"\", \"port\":\"3000\"}";
+  String BODY = "{\"id\":\"test0\",\"ip\":\"192.168.118.94\",\"port\":\"80\"}";
+//  String BODY = "{\"id\":\"" + botid + "\",\"ip\":\"" + serverip + "\", \"port\":\"3000\"}";
   // Forming the request (the hardest part).
   String request = String(METHOD) + " " + PATH + " HTTP/1.1\r\n" +
                    "Host: " + URL + "\r\n" +
