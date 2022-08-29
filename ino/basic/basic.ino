@@ -4,8 +4,8 @@
 #include <ESPAsyncWebServer.h>
 
 // Replace with your network credentials
-const char* ssid = "Nukalas_2GEXT";
-const char* password = "885623277";
+const char* ssid = "PixelMach";
+const char* password = "wherewouldibewithoutyou";
 
 bool ledState = 0;
 const int ledPin = 2;
@@ -116,10 +116,10 @@ const char index_html[] PROGMEM = R"rawliteral(
   function onMessage(event) {
     var state;
     if (event.data == "1"){
-      state = "ON";
+      state = "OFF";
     }
     else{
-      state = "OFF";
+      state = "ON";
     }
     document.getElementById('state').innerHTML = state;
   }

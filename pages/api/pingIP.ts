@@ -9,7 +9,7 @@ export default async function handler(
   const { id, ip, port } = req.body;
 
   res.status(200).json({
-    data: pingIP(id, ip, port),
+    data: await pingIP(id, ip, port),
   });
 }
 
