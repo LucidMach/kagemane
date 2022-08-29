@@ -15,5 +15,6 @@ export default async function handler(
 
 export const pingIP = async (id: string, ip: string, port: string) => {
   const { data, error } = await supabase.from("Bot").upsert({ id, ip, port });
-  return error ? ":( Oops" : "SUCCESS";
+  console.log(error);
+  return error ? ":( Oops \n check log in vercel" : "SUCCESS";
 };
