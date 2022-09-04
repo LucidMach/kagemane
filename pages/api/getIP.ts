@@ -18,5 +18,6 @@ export const getIP = async (id: string) => {
     .from("Bot")
     .select("ip,port")
     .eq("id", id);
-  return data ? `${data[0].ip}:${data[0].port}` : "ERROR";
+
+  return data ? data[0] : "ERROR";
 };
