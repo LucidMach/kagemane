@@ -30,6 +30,156 @@ const int ledPin = 2;
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
+const char index_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title></title>
+  <style>
+    body {
+      background: #a2b69a;
+    }
+    * {
+      color: #31601e;
+    }
+    .button {
+      background: #a2b69a;
+      border: 0;
+      width: 250px;
+      height: 250px;
+      border-radius: 100%;
+    }
+    .neumorphism {
+      box-shadow: 0.5rem 0.5rem 0.75rem 0 rgba(255, 255, 255, 0.25) inset,
+        -0.5rem -0.5rem 0.75rem 0 rgba(0, 0, 0, 0.3) inset;
+    }
+    .neumorphism:hover {
+      box-shadow: 0.4rem 0.4rem 0.6rem 0 rgba(255, 255, 255, 0.25) inset,
+        -0.4rem -0.4rem 0.6rem 0 rgba(0, 0, 0, 0.3) inset;
+    }
+    .neumorphism:active {
+      box-shadow: 0.25rem 0.25rem 0.5rem 0 rgba(255, 255, 255, 0.25) inset,
+        -0.25rem -0.25rem 0.5rem 0 rgba(0, 0, 0, 0.3) inset;
+    }
+    .container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .links {
+      position: absolute;
+      bottom: 1rem;
+    }
+    .lgt {
+      padding: 30px;
+    }
+    .led {
+      position: relative;
+      float: left;
+      width: 20px;
+      height: 20px;
+      margin-right: 20px;
+      border: 0;
+      border-radius: 50%%;
+      outline: 0;
+      background-color: #000;
+      text-indent: -9999px;
+      box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.5),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.25),
+        inset 0 5px 3px -2px rgba(255, 255, 255, 0.25),
+        inset 0 -5px 3px -2px rgba(0, 0, 0, 0.1),
+        0 2px 5px 0px rgba(0, 0, 0, 0.5);
+    }
+    .led::before {
+      content: "";
+      position: absolute;
+      display: block;
+      top: 30%%;
+      left: 40%%;
+      width: 1%%;
+      height: 1%%;
+      margin-left: -1px;
+      border-radius: 50%%;
+      background-color: #f1f1f1;
+      box-shadow: 0 0 1px 1px rgba(255, 255, 255, 0.5),
+        0 0 1px 1px rgba(255, 255, 255, 0.5);
+    }
+    .led--ON {
+      background-color: #11ff00cb;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="lgt">
+    <div class="led"></div>
+  </div>
+  <div class="container">
+    <button id="button" class="button neumorphism"></button>
+    <div class="links">
+
+      <a href="https://kagemane.vercel.app/api" target="_">api documentation</Link>
+        |
+        <a href="https://github.com/lucidmach/kagemane" target="_">
+          source code
+        </a>
+        |
+        <a target="_" href="https://www.notion.so/lucidmach/KageMane-0e7013668e0c45eab53225d5a972c40b">
+          project documentation
+        </a>
+    </div>
+  </div>
+  <script>
+    var gateway = `ws://${window.location.hostname}/ws`;
+    var websocket;
+    window.addEventListener('load', onLoad);
+    function initWebSocket() {
+      console.log('Trying to open a WebSocket connection...');
+      websocket = new WebSocket(gateway);
+      websocket.onopen = onOpen;
+      websocket.onclose = onClose;
+      websocket.onmessage = onMessage; // <-- add this line
+    }
+    function onOpen(event) {
+      console.log('Connection opened');
+    }
+    function onClose(event) {
+      console.log('Connection closed');
+      setTimeout(initWebSocket, 2000);
+    }
+    function onMessage(event) {
+       if (event.data == "1") {
+        document.querySelector('.led').classList.add("led--OFF");
+       }
+       else {
+        document.querySelector('.led').classList.add("led--ON");
+       }
+    }
+    function onLoad(event) {
+      initWebSocket();
+      initButton();
+    }
+    function initButton() {
+      document.getElementById('button').addEventListener('click', toggle);
+    }
+    function toggle() {
+      websocket.send('toggle');
+    }
+  </script>
+</body>
+</html>
+)rawliteral";
+
 void pingIP() {
   WiFiClientSecure httpsClient;
   httpsClient.setFingerprint(fingerprint);
@@ -151,6 +301,11 @@ void setup() {
   Serial.println(serverip);
 
   initWebSocket();
+
+  // Route for root / web page
+  server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send_P(200, "text/html", index_html, processor);
+  });
 
   // Start server
   server.begin();

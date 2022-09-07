@@ -5,17 +5,13 @@ import Links from "../../components/Links";
 import Status from "../../components/Status";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 const Bots: NextPage = () => {
   const [led, setLED] = useState<boolean>(false);
 
   const router = useRouter();
   const { id } = router.query;
-
-  const handleClick = () => {
-    setLED((prev) => !prev);
-  };
 
   const { data, isLoading } = useQuery(["bot", id], async ({ queryKey }) => {
     const res = await axios.post("/api/getIP", { id });
@@ -28,6 +24,36 @@ const Bots: NextPage = () => {
     ) : (
       <div>{`${id} [ws://${data.ip}:${data.port}]`}</div>
     );
+  };
+
+  //////////////////////////////////////////////////////////////////////////////////////// fr arduino
+
+  const ws = useRef<WebSocket>();
+
+  useEffect(() => {
+    if (data) {
+      const botip = "ws://" + data.ip + "/ws";
+
+      ws.current = new WebSocket(botip);
+
+      ws.current.onopen = () => {
+        console.log("Connection opened");
+
+        if (ws.current)
+          ws.current.onmessage = (e) => {
+            e.data == "1" ? setLED(false) : setLED(true);
+          };
+      };
+
+      ws.current.onclose = () => console.log("Connection closed");
+    }
+  }, [data]);
+
+  let handleClick = () => {
+    setLED((prev) => !prev);
+    if (ws.current) {
+      ws.current.send("toggle");
+    }
   };
 
   return (
