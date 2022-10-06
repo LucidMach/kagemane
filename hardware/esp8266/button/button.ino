@@ -20,14 +20,14 @@ const char *password = "wherewouldibewithoutyou";
 String serverip;
 const String botid = "test0";
 const String endpoint = "https://kagemane.vercel.app/api/pingIP";
-const char fingerprint[] PROGMEM = "12 44 86 24 57 65 4D 03 4A 9F 7C 7B DD 59 13 BC 5B 22 29 B7";
+const char fingerprint[] PROGMEM = "D0 B6 8E BB EC 26 22 D9 2A BA D8 7F 62 E6 1A 6E 55 33 89 DE";
 
 // button & led
 bool ledState = 0;
 const int ledPin = 2;
 
 // Create AsyncWebServer object on port 80 for WS and 443 for WSS
-AsyncWebServer server(443);
+AsyncWebServer server(80);
 AsyncWebSocket ws("/socket");
 
 void pingIP()

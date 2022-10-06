@@ -14,7 +14,10 @@ export default async function handler(
 }
 
 export const getIP = async (id: string) => {
-  const { data, error } = await supabase.from("Bot").select("ip").eq("id", id);
+  const { data, error } = await supabase
+    .from("Bot")
+    .select("ip,secure")
+    .eq("id", id);
 
   return data ? data[0] : "ERROR";
 };

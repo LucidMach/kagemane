@@ -22,7 +22,10 @@ const Bots: NextPage = () => {
     return isLoading ? (
       <div>fetching latest IP...</div>
     ) : (
-      <div>{`IP address: [${data.ip}]`}</div> // for HTTP+WS = 80 | HTTPS+WSS = 443
+      <>
+        <div>{`IP address: [${data.ip}]`}</div>
+        <div>{`SECURE: [${data.secure}]`}</div>
+      </>
     );
   };
 
@@ -32,7 +35,8 @@ const Bots: NextPage = () => {
 
   useEffect(() => {
     if (data) {
-      const botip = "wss://" + data.ip + "/socket";
+      const botip = data.secure ? "wss" : "ws" + "://" + data.ip + "/socket";
+      console.log(botip);
 
       ws.current = new WebSocket(botip);
 
