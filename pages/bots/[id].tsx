@@ -35,7 +35,8 @@ const Bots: NextPage = () => {
 
   useEffect(() => {
     if (data) {
-      const botip = data.secure ? "wss" : "ws" + "://" + data.ip + "/socket";
+      let botip = data.secure ? "wss://" : "ws://";
+      botip += data.ip + data.endpoint;
       console.log(botip);
 
       ws.current = new WebSocket(botip);
