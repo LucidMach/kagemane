@@ -37,7 +37,7 @@ const ConnectToBot: NextPage = () => {
             value={botID}
             onChange={handleChange}
           />
-          <RouterButton displayText="Connect" onClickTo={`/bots/${botID}`} />
+          <RouterButton displayText="Connect" onClickTo={`/debug/${botID}`} />
         </form>
         <Links />
       </div>
