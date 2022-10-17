@@ -27,6 +27,15 @@ body,
   box-shadow: 0.25rem 0.25rem 0.5rem 0 rgba(255, 255, 255, 0.25) inset,
     -0.25rem -0.25rem 0.5rem 0 rgba(0, 0, 0, 0.3) inset;
 }
+input[type=range]::-webkit-slider-thumb{
+  background: #31601e;
+   -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  border-radius: 100%;
+  width: 1.25rem; /* Set a specific slider handle width */
+  height: 1.25rem; /* Slider handle height */
+  cursor: pointer; /* Cursor on hover */
+}
 .lgt {
   padding: 30px;
 }

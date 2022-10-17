@@ -1,10 +1,8 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import Router from "next/router";
 import Links from "../../../components/Links";
 import Status from "../../../components/Status";
-import ToggleSwitch from "../../../components/ToggleSwitch";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
