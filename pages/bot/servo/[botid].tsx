@@ -16,9 +16,6 @@ const Servo: NextPage = () => {
   let [angle, setAngle] = useState(90);
   const router = useRouter();
 
-  const [touchStart, setTouchStart] = useState(0);
-  const [touchEnd, setTouchEnd] = useState(0);
-
   const { botid } = router.query;
 
   // cube angle modifiers
@@ -26,17 +23,19 @@ const Servo: NextPage = () => {
   const angleDec = () => setAngle((prev) => prev - 5);
 
   // handle swipe & drag
-  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) =>
     setTouchStart(e.targetTouches[0].clientX);
-  };
-  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) =>
     setTouchEnd(e.targetTouches[0].clientX);
-  };
   const handleTouchEnd = () => {
     if (touchStart - touchEnd > swipeSensitivity) angleDec();
     if (touchStart - touchEnd < -swipeSensitivity) angleInc();
   };
 
+  // handle arrow keys for cube control
   useEffect(() => {
     if (document) {
       document.addEventListener("keydown", (e) => {
