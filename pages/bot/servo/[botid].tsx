@@ -7,18 +7,35 @@ import { Canvas } from "@react-three/fiber";
 import Links from "../../../components/Links";
 import Status from "../../../components/Status";
 import WSIcon from "../../../components/WSIcon";
-import { useEffect, useState } from "react";
+import { TouchEvent, useEffect, useState } from "react";
 import Slider from "../../../components/Slider";
+
+const swipeSensitivity = 75;
 
 const Servo: NextPage = () => {
   let [angle, setAngle] = useState(90);
   const router = useRouter();
+
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
 
   const { botid } = router.query;
 
   // cube angle modifiers
   const angleInc = () => setAngle((prev) => prev + 5);
   const angleDec = () => setAngle((prev) => prev - 5);
+
+  // handle swipe & drag
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+  const handleTouchEnd = () => {
+    if (touchStart - touchEnd > swipeSensitivity) angleDec();
+    if (touchStart - touchEnd < -swipeSensitivity) angleInc();
+  };
 
   useEffect(() => {
     if (document) {
@@ -37,7 +54,12 @@ const Servo: NextPage = () => {
       <div className="h-full flex justify-between items-center flex-col bg-shikamaru-green-100 text-shikamaru-green-900">
         <WSIcon />
         <Status />
-        <div className="h-[300px] w-full flex flex-col items-center justify-center">
+        <div
+          className="h-[300px] w-full flex flex-col items-center justify-center"
+          onTouchStart={(e) => handleTouchStart(e)}
+          onTouchMove={(e) => handleTouchMove(e)}
+          onTouchEnd={(e) => handleTouchEnd()}
+        >
           <Canvas
             camera={{ fov: 60, near: 0.1, far: 1000, position: [0, 0, 3] }}
           >
