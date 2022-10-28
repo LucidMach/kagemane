@@ -2,9 +2,9 @@ import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import Router from "next/router";
-import Links from "../../components/Links";
-import Status from "../../components/Status";
-import ToggleSwitch from "../../components/ToggleSwitch";
+import Links from "../../../components/Links";
+import Status from "../../../components/Status";
+import ToggleSwitch from "../../../components/ToggleSwitch";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
@@ -13,10 +13,10 @@ const Bots: NextPage = () => {
   const [led, setLED] = useState<boolean>(false);
 
   const router = useRouter();
-  const { id } = router.query;
+  const { botid } = router.query;
 
-  const { data, isLoading } = useQuery(["bot", id], async ({ queryKey }) => {
-    const res = await axios.post("/api/getIP", { id });
+  const { data, isLoading } = useQuery(["bot", botid], async ({ queryKey }) => {
+    const res = await axios.post("/api/getBotProps", { id: botid });
     return res.data.data;
   });
 
@@ -81,7 +81,9 @@ const Bots: NextPage = () => {
           <strong>BotID</strong>
           {botQueryRender()}
         </div>
-        <ToggleSwitch onClick={() => Router.push({ pathname: "/bot/" + id })} />
+        <ToggleSwitch
+          onClick={() => Router.push({ pathname: "/bot/" + botid })}
+        />
         <Links />
       </div>
     </>

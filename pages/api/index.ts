@@ -14,13 +14,7 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  res.status(200).json({
-    name: "LucidMach",
-    endpoints: {
-      "/api": "home route of api, shows all avaiable enpoints of the API",
-      "/api/pingIP":
-        "API endpoint for bot to ping/update it's IP address in DB",
-      "/api/getIP": "API endpoint for UI to get a bot's current IP address",
-    },
-  });
+  res
+    .status(200)
+    .redirect("https://github.com/LucidMach/kagemane/tree/master/pages/api");
 }

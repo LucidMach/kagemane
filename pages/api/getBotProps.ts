@@ -1,4 +1,4 @@
-// API endpoint for UI to get a bot's current IP address
+// API endpoint for UI to get a bot's current properties
 import { supabase } from "../../utils/supabase";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -9,12 +9,15 @@ export default async function handler(
   const { id } = req.body;
 
   res.status(200).json({
-    data: await getIP(id),
+    data: await getBotProps(id),
   });
 }
 
-export const getIP = async (id: string) => {
-  const { data, error } = await supabase.from("Bot").select("ip").eq("id", id);
+export const getBotProps = async (id: string) => {
+  const { data, error } = await supabase
+    .from("Bot")
+    .select("ip,secure,endpoint,port")
+    .eq("id", id);
 
   return data ? data[0] : "ERROR";
 };

@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import Router from "next/router";
 import Links from "../../components/Links";
 import Status from "../../components/Status";
+import SettingsIcon from "../../components/SettingsIcon";
 
 const buttonCSS =
   "border-shikamaru-green-900 border-2 w-2/3 p-2 rounded-sm hover:bg-shikamaru-green-900 hover:text-shikamaru-green-100";
@@ -58,11 +59,13 @@ const Bot: NextPage = () => {
       </Head>
       <div className="h-full flex justify-between items-center flex-col bg-shikamaru-green-100 text-shikamaru-green-900">
         <Status />
-        {/* <div>{JSON.stringify(data)}</div> */}
+        <SettingsIcon onClickTo={`/bot/settings/${botid}`} />
         <div className="flex flex-col w-full min-w-[600px] items-center gap-3">
           {renderUIApps()}
           <p className="text-sm m-3">(or)</p>
-          <button className={buttonCSS}>create new application</button>
+          <button className={buttonCSS + " cursor-not-allowed"}>
+            create new application
+          </button>
         </div>
         <Links />
       </div>
