@@ -28,10 +28,17 @@ const Home: NextPage = () => (
           onClickTo="/connect-to-bot"
           displayText="Connect to Bot"
         />
-        <RouterLink
+        {/* <RouterLink
           onClickTo="/create-new-bot"
           displayText="or create a new bot"
-        />
+        /> */}
+        <a
+          className="underline text-sm"
+          href="https://github.com/LucidMach/kagemane/tree/master/hardware"
+          target="_"
+        >
+          or create a new bot
+        </a>
       </div>
       <Links />
     </div>
