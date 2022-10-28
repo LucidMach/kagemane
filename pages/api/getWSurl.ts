@@ -19,12 +19,17 @@ export const getIP = async (id: string) => {
     .select("ip,secure,endpoint,port")
     .eq("id", id);
 
-  let wsurl: string;
+  if (error) {
+    console.log(error);
+    return "ERROR";
+  }
 
-  if (!data) return "ERROR";
+  if (data[0]) {
+    let wsurl: string;
 
-  wsurl = data[0].secure ? "wss://" : "ws://";
-  wsurl += data[0].ip + ":" + data[0].port + data[0].endpoint;
+    wsurl = data[0].secure ? "wss://" : "ws://";
+    wsurl += data[0].ip + ":" + data[0].port + data[0].endpoint;
 
-  return wsurl;
+    return wsurl;
+  }
 };

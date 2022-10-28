@@ -15,7 +15,8 @@ const Button: NextPage = () => {
   const { botid } = router.query;
 
   const { data, isLoading } = useQuery(["bot", botid], async ({ queryKey }) => {
-    const res = await axios.post("/api/getIP", { id: botid });
+    const res = await axios.post("/api/getWSurl", { id: botid });
+    console.log(res.data.data);
     return res.data.data;
   });
 
@@ -25,11 +26,7 @@ const Button: NextPage = () => {
 
   useEffect(() => {
     if (data) {
-      let botip = data.secure ? "wss://" : "ws://";
-      botip += data.ip + ":" + data.port + data.endpoint;
-      console.log(botip);
-
-      ws.current = new WebSocket(botip);
+      ws.current = new WebSocket(data);
 
       ws.current.onopen = () => {
         console.log("Connection opened");
