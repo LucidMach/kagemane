@@ -7,8 +7,11 @@ import { Canvas } from "@react-three/fiber";
 import Links from "../../../components/Links";
 import Status from "../../../components/Status";
 import WSIcon from "../../../components/WSIcon";
-import { TouchEvent, useEffect, useState } from "react";
+import { TouchEvent, useEffect, useRef, useState } from "react";
 import Slider from "../../../components/Slider";
+
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const swipeSensitivity = 75;
 
@@ -17,6 +20,34 @@ const Servo: NextPage = () => {
   const router = useRouter();
 
   const { botid } = router.query;
+
+  const { data, isLoading } = useQuery(["bot", botid], async ({ queryKey }) => {
+    const res = await axios.post("/api/getWSurl", { id: botid });
+    console.log(res.data.data);
+    return res.data.data;
+  });
+
+  const ws = useRef<WebSocket>();
+
+  useEffect(() => {
+    if (data) {
+      ws.current = new WebSocket(data);
+
+      ws.current.onopen = () => {
+        console.log("Connection opened");
+      };
+
+      ws.current.onclose = () => console.log("Connection closed");
+    }
+  }, [data]);
+
+  // send a ws msg whenever the angle changes
+  useEffect(() => {
+    const msg = { angle };
+    if (ws.current) {
+      ws.current.send(JSON.stringify(msg));
+    }
+  }, [angle]);
 
   // cube angle modifiers
   const angleInc = () => setAngle((prev) => prev + 5);
