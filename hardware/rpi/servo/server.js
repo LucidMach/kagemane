@@ -1,8 +1,9 @@
 const ip = require("ip");
-const { spawn } = require("child_process");
+const {exec} = require("child_process")
 const { WebSocketServer } = require("ws");
 
 const pingIP = require("./pingIP");
+const gpiopin = 21
 
 // updating DB
 const botID = "rPI0"
@@ -18,7 +19,8 @@ wss.on("connection", function connection(ws) {
     const msg = JSON.parse(data.toString()) // expects {"angle":0..180}
     if (msg.angle) {
       console.log(msg.angle);
-      const py = spawn("python", ["servo.py", msg.angle]);
+      const servosig = (parseInt(msg.angle)*200/18) + 500 // converts 0-180 to 500-2500
+      exec(`pigs s ${gpiopin} ${servosig}`)
     }
   });
   ws.on("close", () => {
