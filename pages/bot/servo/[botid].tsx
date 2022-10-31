@@ -100,7 +100,7 @@ const Servo: NextPage = () => {
               <meshStandardMaterial />
             </mesh>
           </Canvas>
-          <Slider value={angle} setValue={setAngle} />
+          <Slider value={angle} setValue={setAngle} display={true} />
         </div>
         <Links />
       </div>
