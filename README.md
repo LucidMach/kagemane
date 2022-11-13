@@ -9,7 +9,6 @@ teleoperation/shadow control platform for robots
 </div>
 
 the goal is to build a **no-code** platform for _building UI for robots_
-<img width="960" alt="Screenshot_20221101_065401" src="https://user-images.githubusercontent.com/39376102/201519505-a7af1949-e310-4814-9630-536701c871c8.png">
 
 > as of now is a **collection of UI** capable of **controlling sensors** (or) **monitoring actuators** in robots
 
@@ -49,7 +48,7 @@ here's a screenshot demoing UI 👇
 
 <div align=center>
 
-<img src="https://drive.google.com/file/d/1SIFTe6toDVttAtBGSq5YgToHcSC1TOKX/view">
+<img src="https://raw.githubusercontent.com/LucidMach/kagemane/master/public/digitalSensorUI.png" width="50%" >
 
 </div>
 
@@ -58,7 +57,7 @@ here's a screenshot demoing UI 👇
 
 <div align=center>
 
-<img src="https://drive.google.com/file/d/1SIFTe6toDVttAtBGSq5YgToHcSC1TOKX/view">
+<img src="https://raw.githubusercontent.com/LucidMach/kagemane/master/public/analogSensorUI.png" width="50%" >
 
 </div>
 
