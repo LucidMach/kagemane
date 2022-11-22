@@ -8,6 +8,7 @@ import ToggleSwitch from "../../../components/ToggleSwitch";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
+import useWS from "../../../hooks/useWS";
 
 const Bots: NextPage = () => {
   const [led, setLED] = useState<boolean>(false);
@@ -33,28 +34,9 @@ const Bots: NextPage = () => {
 
   //////////////////////////////////////////////////////////////////////////////////////// fr arduino
 
-  const ws = useRef<WebSocket>();
-
-  useEffect(() => {
-    if (data) {
-      let botip = data.secure ? "wss://" : "ws://";
-      botip += data.ip + ":" + data.port + data.endpoint;
-      console.log(botip);
-
-      ws.current = new WebSocket(botip);
-
-      ws.current.onopen = () => {
-        console.log("Connection opened");
-
-        if (ws.current)
-          ws.current.onmessage = (e) => {
-            e.data == "1" ? setLED(false) : setLED(true);
-          };
-      };
-
-      ws.current.onclose = () => console.log("Connection closed");
-    }
-  }, [data]);
+  const ws = useWS(data, (e) => {
+    e.data == "1" ? setLED(false) : setLED(true);
+  });
 
   let handleClick = () => {
     setLED((prev) => !prev);

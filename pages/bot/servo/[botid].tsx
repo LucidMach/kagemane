@@ -12,6 +12,7 @@ import Slider from "../../../components/Slider";
 
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import useWS from "../../../hooks/useWS";
 
 const swipeSensitivity = 75;
 
@@ -27,19 +28,7 @@ const Servo: NextPage = () => {
     return res.data.data;
   });
 
-  const ws = useRef<WebSocket>();
-
-  useEffect(() => {
-    if (data) {
-      ws.current = new WebSocket(data);
-
-      ws.current.onopen = () => {
-        console.log("Connection opened");
-      };
-
-      ws.current.onclose = () => console.log("Connection closed");
-    }
-  }, [data]);
+  const ws = useWS(data, () => {});
 
   // send a ws msg whenever the angle changes
   useEffect(() => {

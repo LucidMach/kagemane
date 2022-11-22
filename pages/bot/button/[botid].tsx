@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import WSIcon from "../../../components/WSIcon";
+import useWS from "../../../hooks/useWS";
 
 const Button: NextPage = () => {
   const [led, setLED] = useState<boolean>(false);
@@ -22,24 +23,9 @@ const Button: NextPage = () => {
 
   //////////////////////////////////////////////////////////////////////////////////////// fr arduino
 
-  const ws = useRef<WebSocket>();
-
-  useEffect(() => {
-    if (data) {
-      ws.current = new WebSocket(data);
-
-      ws.current.onopen = () => {
-        console.log("Connection opened");
-
-        if (ws.current)
-          ws.current.onmessage = (e) => {
-            e.data == "1" ? setLED(false) : setLED(true);
-          };
-      };
-
-      ws.current.onclose = () => console.log("Connection closed");
-    }
-  }, [data]);
+  const ws = useWS(data, (e) => {
+    e.data == "1" ? setLED(false) : setLED(true);
+  });
 
   let handleClick = () => {
     setLED((prev) => !prev);

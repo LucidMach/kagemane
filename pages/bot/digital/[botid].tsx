@@ -7,6 +7,7 @@ import { useEffect, useRef } from "react";
 import Links from "../../../components/Links";
 import Status from "../../../components/Status";
 import WSIcon from "../../../components/WSIcon";
+import useWS from "../../../hooks/useWS";
 
 const Sensor: NextPage = () => {
   const router = useRouter();
@@ -19,27 +20,13 @@ const Sensor: NextPage = () => {
     return res.data.data;
   });
 
-  const ws = useRef<WebSocket>();
+  const ws = useWS(data, (e) => {
+    const msg = e.data;
 
-  useEffect(() => {
-    if (data) {
-      ws.current = new WebSocket(data);
-
-      ws.current.onopen = () => {
-        console.log("Connection opened");
-      };
-
-      ws.current.onmessage = (e) => {
-        const msg = e.data;
-
-        if (msg) {
-          value.current = msg.value === "false" ? true : false;
-        }
-      };
-
-      ws.current.onclose = () => console.log("Connection closed");
+    if (msg) {
+      value.current = msg.value === "false" ? true : false;
     }
-  }, [data]);
+  });
 
   return (
     <>
